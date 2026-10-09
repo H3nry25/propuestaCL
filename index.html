@@ -15,22 +15,25 @@
        SISTEMA VISUAL: MINIMALISTA, PASTEL Y HUMANO
        ============================================================ */
     :root {
-      --bg: #f8fafc;
-      --sky-50: #f0f9ff;
+      --bg: #cbeafe;
+      --sky-50: #f0fdfa;
       --sky-100: #e0f2fe;
       --sky-200: #bae6fd;
+      --sky-300: #7dd3fc;
       --sky-400: #38bdf8;
       --sky-500: #0ea5e9;
       --sky-600: #0284c7;
+      --ocean-deep: #0369a1;
       
       --spotify-green: #1ed760;
       
       --text-main: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
       
-      --card-bg: rgba(255, 255, 255, 0.92);
-      --card-border: rgba(224, 242, 254, 0.85);
+      /* Efecto Vidrio (Glassmorphism translúcido) */
+      --card-bg: rgba(255, 255, 255, 0.40);
+      --card-border: rgba(255, 255, 255, 0.65);
       
       --radius-sm: 12px;
       --radius-md: 20px;
@@ -51,25 +54,72 @@
       min-height: 100vh;
       min-height: 100dvh;
       width: 100vw;
-      background: radial-gradient(120% 120% at 50% 0%, #e0f2fe 0%, #f0f9ff 45%, #ffffff 100%);
+      background: linear-gradient(175deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 70%, #38bdf8 100%);
       color: var(--text-main);
       display: flex;
       justify-content: center;
       align-items: center;
       padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
       overflow-x: hidden;
+      position: relative;
       touch-action: manipulation;
     }
 
-    /* Fondo limpio y sutil estilo iOS */
-    .bg-grid {
+    /* Brillo de agua iluminada desde la superficie */
+    body::before {
+      content: '';
       position: fixed;
       inset: 0;
-      background-image: 
-        radial-gradient(circle at 20% 15%, rgba(186, 230, 253, 0.35) 0%, transparent 40%),
-        radial-gradient(circle at 80% 85%, rgba(224, 242, 254, 0.45) 0%, transparent 45%);
+      background: radial-gradient(circle at 50% -15%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 65%);
       pointer-events: none;
       z-index: 0;
+    }
+
+    /* ============================================================
+       OLAS ANIMADAS (3 CAPAS SVG FLUIDAS EN EL FONDO)
+       ============================================================ */
+    .ocean-waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 38vh;
+      min-height: 200px;
+      max-height: 340px;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .waves-svg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .wave-parallax > use {
+      animation: moveWave 14s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    }
+    .wave-layer-1 {
+      fill: rgba(255, 255, 255, 0.35);
+      animation-delay: -2s !important;
+      animation-duration: 9s !important;
+    }
+    .wave-layer-2 {
+      fill: rgba(186, 230, 253, 0.60);
+      animation-delay: -4s !important;
+      animation-duration: 13s !important;
+    }
+    .wave-layer-3 {
+      fill: rgba(255, 255, 255, 0.85);
+      animation-delay: -6s !important;
+      animation-duration: 18s !important;
+    }
+    @keyframes moveWave {
+      0% {
+        transform: translate3d(-90px, 0, 0);
+      }
+      100% { 
+        transform: translate3d(85px, 0, 0);
+      }
     }
 
     /* Contenedor central (Medida exacta de pantalla móvil moderna) */
@@ -106,18 +156,17 @@
       pointer-events: none;
     }
 
-    /* Tarjeta principal con borde fino y sombra natural */
+    /* Tarjeta principal con efecto vidrio (Glassmorphism translúcido) */
     .card-shell {
       width: 100%;
       background: var(--card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--card-border);
       border-radius: var(--radius-lg);
       box-shadow: 
-        0 4px 6px -1px rgba(14, 165, 233, 0.04),
-        0 20px 40px -12px rgba(14, 165, 233, 0.12),
-        0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        0 12px 36px 0 rgba(2, 132, 199, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
       padding: 30px 22px;
       position: relative;
       overflow: hidden;
@@ -673,7 +722,20 @@
 </head>
 <body>
 
-  <div class="bg-grid"></div>
+  <!-- Olas Animadas (3 Capas SVG de agua fluida en el fondo) -->
+  <div class="ocean-waves" aria-hidden="true">
+    <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+      </defs>
+      <g class="wave-parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" class="wave-layer-1" />
+        <use xlink:href="#gentle-wave" x="48" y="3" class="wave-layer-2" />
+        <use xlink:href="#gentle-wave" x="48" y="5" class="wave-layer-3" />
+      </g>
+    </svg>
+  </div>
   <canvas id="confetti-canvas"></canvas>
 
   <main class="app-viewport">
@@ -786,7 +848,7 @@
             Sí, acepto ser tu media naranja para siempre. 🍊
           </button>
           <button class="action-btn btn-pizza-theme" id="btn-pizza">
-            Sí, y prometo no hacer (tantos) berrinches. 🌪️🤍
+            Sí. ¿Por qué sigues leyendo esta segunda opción? 🙄
           </button>
         </div>
 
@@ -794,13 +856,13 @@
         <div class="acceptance-card" id="acceptance-card">
           <div class="acceptance-badge-icon">❤️🩹</div>
           <h2 class="acceptance-heading">
-            Oficialmente nosotros. Renuncio a mi soledad por ti. 🖤
+            EL INICIO DE NUESTRA HISTORIA ❤️
           </h2>
 
           <div class="personal-note-box">
-            <div class="personal-note-header">MÁS QUE UNA PROMESA 🔒</div>
+            <div class="personal-note-header">MI MEDIA NARANJA OFICIAL 🍊</div>
             <p class="personal-note-text">
-              Me comprometo a ser tu lugar seguro, a no soltarte nunca y a que cada día juntos valga la pena (incluso cuando hagamos berrinches).
+              Encontrarte fue lo mejor que me ha pasado. Prometo elegirte todos los días, celebrar cada uno de tus logros, cuidarte cuando te sientas cansada y esforzarme siempre para hacerte la mujer más feliz del mundo. Te adoro, niña de mis ojos.
             </p>
             <div class="personal-note-signature">
               — Henry
@@ -979,7 +1041,7 @@
         'Calculando cuanto tiempo te esperé... ⏳',
         'Revisando horarios de pastelería y natación... 👩‍🍳🏊‍♀️',
         'Preparando paciencia para esos días malos... 🌪️',
-        'Desbloqueando el 100% mi corazón... ❤️🩹'
+        'Desbloqueando el 100% de mi corazón... ❤️🩹'
       ];
 
       function startSyncScreen() {
