@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Henry & Caro ✨</title>
+  
+  <!-- Tipografía moderna, limpia y editorial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       SISTEMA VISUAL: MINIMALISTA, PASTEL Y HUMANO
+       ============================================================ */
+    :root {
+      --bg: #f8fafc;
+      --sky-50: #f0f9ff;
+      --sky-100: #e0f2fe;
+      --sky-200: #bae6fd;
+      --sky-400: #38bdf8;
+      --sky-500: #0ea5e9;
+      --sky-600: #0284c7;
+      
+      --spotify-green: #1ed760;
+      
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(224, 242, 254, 0.85);
+      
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100vw;
+      background: radial-gradient(120% 120% at 50% 0%, #e0f2fe 0%, #f0f9ff 45%, #ffffff 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* Fondo limpio y sutil estilo iOS */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 15%, rgba(186, 230, 253, 0.35) 0%, transparent 40%),
+        radial-gradient(circle at 80% 85%, rgba(224, 242, 254, 0.45) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Contenedor central (Medida exacta de pantalla móvil moderna) */
+    .app-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 395px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Transición suave entre pantallas */
+    .phase-screen {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(14px) scale(0.98);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .phase-screen.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .phase-screen.fade-out {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.96);
+      pointer-events: none;
+    }
+
+    /* Tarjeta principal con borde fino y sombra natural */
+    .card-shell {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      box-shadow: 
+        0 4px 6px -1px rgba(14, 165, 233, 0.04),
+        0 20px 40px -12px rgba(14, 165, 233, 0.12),
+        0 1px 2px 0 rgba(0, 0, 0, 0.03);
+      padding: 30px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       FASE 1: EL DESCONGELAMIENTO
+       ============================================================ */
+    .chat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .chat-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sky-500);
+      box-shadow: 0 0 8px var(--sky-400);
+    }
+
+    .phase-1-quote {
+      font-size: 1.22rem;
+      line-height: 1.45;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+      margin-bottom: 26px;
+      letter-spacing: -0.02em;
+    }
+    .phase-1-quote span {
+      color: var(--sky-600);
+    }
+
+    /* Contenedor del cubo de hielo interactivo */
+    .ice-stage {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 10px auto 26px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .ice-backdrop-aura {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(186, 230, 253, 0.8) 0%, rgba(224, 242, 254, 0.2) 65%, transparent 75%);
+      border-radius: 50%;
+      filter: blur(14px);
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .ice-box {
+      position: relative;
+      z-index: 2;
+      font-size: 7rem;
+      line-height: 1;
+      display: inline-block;
+      transition: opacity 0.3s ease, transform 0.12s ease;
+      filter: drop-shadow(0 14px 20px rgba(186, 230, 253, 0.6));
+    }
+    .ice-stage:active .ice-box {
+      transform: scale(0.92);
+    }
+
+    /* Grietas SVG sobre el hielo */
+    .ice-cracks-svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Animación de sacudida realista */
+    .shake-ice {
+      animation: realisticShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes realisticShake {
+      10%, 90% { transform: translate3d(-3px, 0, 0) rotate(-2deg); }
+      20%, 80% { transform: translate3d(4px, 0, 0) rotate(2deg); }
+      30%, 50%, 70% { transform: translate3d(-5px, 0, 0) rotate(-3deg); }
+      40%, 60% { transform: translate3d(5px, 0, 0) rotate(3deg); }
+    }
+
+    /* Barra de progreso de descongelamiento */
+    .ice-progress-bar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .ice-bar-slot {
+      width: 24px;
+      height: 5px;
+      border-radius: 99px;
+      background: #e2e8f0;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .ice-bar-slot.active {
+      background: var(--sky-500);
+      transform: scaleY(1.3);
+      box-shadow: 0 0 8px rgba(14, 165, 233, 0.4);
+    }
+
+    .tap-hint-text {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--sky-600);
+      text-align: center;
+      animation: breathe 2s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.65; transform: scale(0.98); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Partículas de hielo */
+    .ice-flake {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.1rem;
+      z-index: 999;
+      animation: flakeBurst 0.75s ease-out forwards;
+    }
+    @keyframes flakeBurst {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.6); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.2); }
+    }
+
+    /* ============================================================
+       FASE 2: PANTALLA DE SINCRONIZACIÓN (MINIMALISTA ESTILO APPLE)
+       ============================================================ */
+    .sync-card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 4px 6px 4px;
+    }
+
+    .sync-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(224, 242, 254, 0.7);
+      border: 1px solid rgba(186, 230, 253, 0.8);
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--sky-600);
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .sync-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sky-500);
+      animation: pulseSyncDot 1.4s ease-in-out infinite;
+    }
+    @keyframes pulseSyncDot {
+      0%, 100% { opacity: 0.4; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .sync-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 30px;
+    }
+
+    /* Spinner Apple-style moderno y minimalista */
+    .sync-spinner-container {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 28px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .apple-spinner {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      animation: appleRotate 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes appleRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .apple-spinner circle {
+      fill: none;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+    }
+    .apple-spinner-track {
+      stroke: #e2e8f0;
+    }
+    .apple-spinner-fill {
+      stroke: var(--sky-500);
+      stroke-dasharray: 180;
+      stroke-dashoffset: 70;
+    }
+
+    .spinner-center-icon {
+      font-size: 1.7rem;
+      line-height: 1;
+      animation: heartBreath 1.8s ease-in-out infinite;
+    }
+    @keyframes heartBreath {
+      0%, 100% { transform: scale(0.92); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Barra de progreso elegante */
+    .sync-progress-wrapper {
+      width: 100%;
+      max-width: 290px;
+      margin-bottom: 24px;
+    }
+    .sync-progress-track {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sync-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 99px;
+      transition: width 0.08s linear;
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.45);
+    }
+    .sync-percentage-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Texto dinámico que cambia cada 1.5s */
+    .sync-status-box {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+    }
+    .sync-dynamic-text {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--sky-600);
+      line-height: 1.45;
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-block;
+    }
+    .sync-dynamic-text.text-transition {
+      opacity: 0;
+      transform: translateY(6px) scale(0.97);
+    }
+
+    /* ============================================================
+       FASE 3: LA GRAN PREGUNTA
+       ============================================================ */
+    .proposal-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sky-600);
+      background: var(--sky-100);
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      margin-bottom: 18px;
+    }
+
+    .proposal-question {
+      font-size: 2.15rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .proposal-subtext {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    /* Botones de decisión */
+    .btn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      width: 100%;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 17px 18px;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      line-height: 1.35;
+    }
+    .action-btn:hover {
+      border-color: var(--sky-400);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -4px rgba(14, 165, 233, 0.16);
+    }
+    .action-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-orange-theme {
+      background: linear-gradient(180deg, #ffffff 0%, #fffbf5 100%);
+      border-color: #fed7aa;
+    }
+    .btn-pizza-theme {
+      background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+      border-color: #bbf7d0;
+    }
+
+    /* Estado de Éxito / Aceptación */
+    .acceptance-card {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: cardAppear 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      width: 100%;
+    }
+    .acceptance-card.active {
+      display: flex;
+    }
+    @keyframes cardAppear {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .acceptance-badge-icon {
+      font-size: 4.8rem;
+      margin-bottom: 12px;
+      animation: bounceHeart 1.5s ease-in-out infinite;
+    }
+    @keyframes bounceHeart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    .acceptance-heading {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .personal-note-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 18px;
+      width: 100%;
+      text-align: left;
+      margin-top: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .personal-note-header {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--sky-600);
+      margin-bottom: 6px;
+    }
+    .personal-note-text {
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .personal-note-signature {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      color: var(--text-main);
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    /* Estrellitas sutiles de fondo en Fase 3 */
+    .sky-stars-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .css-star {
+      position: absolute;
+      top: -20px;
+      color: var(--sky-400);
+      opacity: 0.8;
+      font-size: 12px;
+      animation: fallDown 5s linear infinite;
+    }
+    @keyframes fallDown {
+      0% { transform: translateY(-5px) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { transform: translateY(580px) rotate(180deg); opacity: 0; }
+    }
+
+    /* Canvas de confeti flotante */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ============================================================
+       OPTIMIZACIÓN Y ERGONOMÍA 100% PARA CELULARES
+       ============================================================ */
+    @media (max-width: 480px) {
+      .app-viewport {
+        max-width: 100%;
+        width: 100%;
+      }
+      .card-shell {
+        padding: 26px 18px;
+        border-radius: 24px;
+      }
+      .phase-1-quote {
+        font-size: 1.16rem;
+        line-height: 1.45;
+        margin-bottom: 20px;
+      }
+      .ice-stage {
+        width: 160px;
+        height: 160px;
+        margin: 8px auto 20px auto;
+      }
+      .ice-box {
+        font-size: 6rem;
+      }
+      .sync-title {
+        font-size: 1.25rem;
+        margin-bottom: 22px;
+      }
+      .sync-spinner-container {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 22px;
+      }
+      .sync-dynamic-text {
+        font-size: 1.02rem;
+        line-height: 1.45;
+      }
+      .proposal-question {
+        font-size: 1.75rem;
+        line-height: 1.3;
+        margin-bottom: 16px;
+      }
+      .action-btn {
+        padding: 16px 16px;
+        font-size: 0.96rem;
+        min-height: 52px;
+      }
+      .acceptance-heading {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .card-shell {
+        padding: 22px 14px;
+      }
+      .phase-1-quote {
+        font-size: 1.06rem;
+      }
+      .ice-stage {
+        width: 140px;
+        height: 140px;
+      }
+      .ice-box {
+        font-size: 5.2rem;
+      }
+      .proposal-question {
+        font-size: 1.5rem;
+      }
+      .action-btn {
+        padding: 14px 12px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <main class="app-viewport">
+
+    <!-- ============================================================
+         FASE 1: EL DESCONGELAMIENTO
+         ============================================================ -->
+    <section id="screen-1" class="phase-screen active">
+      <div class="card-shell">
+        
+        <div style="text-align: center;">
+          <div class="chat-pill">
+            <span class="chat-pill-dot"></span>
+            <span>Mensaje de Henry</span>
+          </div>
+        </div>
+
+        <h1 class="phase-1-quote">
+          "Tenía mi escudo al 100% y el mundo en modo avión, pero tú <span>cambiaste todo esto por completo.</span>"
+        </h1>
+
+        <!-- Hielo interactivo con grietas y sacudida -->
+        <div class="ice-stage" id="ice-stage" title="Toca el hielo">
+          <div class="ice-backdrop-aura" id="ice-aura"></div>
+          
+          <div class="ice-box" id="ice-box">🧊</div>
+
+          <!-- Grietas SVG que van apareciendo con cada toque -->
+          <svg class="ice-cracks-svg" id="ice-cracks-svg" viewBox="0 0 100 100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round">
+            <path d="M50 20 L48 45 L35 55 L25 70" />
+            <path d="M48 45 L65 48 L75 65" />
+            <path d="M52 50 L58 75" />
+          </svg>
+        </div>
+
+        <!-- Indicador limpio de 5 toques -->
+        <div class="ice-progress-bar">
+          <div class="ice-bar-slot" id="bar-1"></div>
+          <div class="ice-bar-slot" id="bar-2"></div>
+          <div class="ice-bar-slot" id="bar-3"></div>
+          <div class="ice-bar-slot" id="bar-4"></div>
+          <div class="ice-bar-slot" id="bar-5"></div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         FASE 2: PANTALLA DE SINCRONIZACIÓN
+         ============================================================ -->
+    <section id="screen-2" class="phase-screen">
+      <div class="card-shell">
+        <div class="sync-card-content">
+          
+          <div class="sync-badge-pill">
+            <span class="sync-pulse-dot"></span>
+            <span>Conexión en progreso</span>
+          </div>
+
+          <h2 class="sync-title">Sincronizando almas gemelas...</h2>
+
+          <!-- Spinner minimalista estilo Apple -->
+          <div class="sync-spinner-container">
+            <svg class="apple-spinner" viewBox="0 0 50 50">
+              <circle class="apple-spinner-track" cx="25" cy="25" r="20" />
+              <circle class="apple-spinner-fill" cx="25" cy="25" r="20" />
+            </svg>
+            <span class="spinner-center-icon">✨</span>
+          </div>
+
+          <!-- Barra de progreso muy elegante -->
+          <div class="sync-progress-wrapper">
+            <div class="sync-progress-track">
+              <div class="sync-progress-fill" id="sync-progress-fill"></div>
+            </div>
+            <div class="sync-percentage-label" id="sync-percentage-label">0%</div>
+          </div>
+
+          <!-- Texto que cambia dinámicamente cada 1.5s -->
+          <div class="sync-status-box">
+            <p class="sync-dynamic-text" id="sync-dynamic-text">
+              Calculando porciones de pizza de pepperoni... 🍕
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         FASE 3: LA GRAN PREGUNTA
+         ============================================================ -->
+    <section id="screen-3" class="phase-screen">
+      
+      <!-- Capa de estrellitas sutiles cayendo -->
+      <div class="sky-stars-layer" id="sky-stars-layer"></div>
+
+      <div class="card-shell">
+        
+        <div style="text-align: center;">
+          <span class="proposal-tag">LA DECISIÓN MÁS IMPORTANTE 🤍</span>
+        </div>
+
+        <h1 class="proposal-question" id="proposal-headline">
+          Dejé de buscar porque te encontré a ti. ¿Hacemos esto oficial y te vuelves mi novia?
+        </h1>
+
+        <p class="proposal-subtext" id="proposal-subtext"></p>
+
+        <!-- Botones con diseño limpio y humano -->
+        <div class="btn-stack" id="btn-stack">
+          <button class="action-btn btn-orange-theme" id="btn-orange">
+            Acepto todos los términos y ser tu alma gemela. 📝✨
+          </button>
+          <button class="action-btn btn-pizza-theme" id="btn-pizza">
+            Sí, pero prepárate para mis berrinches. 🌪️🤭
+          </button>
+        </div>
+
+        <!-- Tarjeta de confirmación y promesa -->
+        <div class="acceptance-card" id="acceptance-card">
+          <div class="acceptance-badge-icon">❤️🩹</div>
+          <h2 class="acceptance-heading">
+            Trato sellado. Renuncio a mi soledad oficialmente. 🖤
+          </h2>
+
+          <div class="personal-note-box">
+            <div class="personal-note-header">ACTUALIZACIÓN DE ESTADO 🔒</div>
+            <p class="personal-note-text">
+              Prometo ser tu lugar seguro, cubrirte la espalda y sacarte las mejores sonrisas (incluso los lunes en la mañana).
+            </p>
+            <div class="personal-note-signature">
+              — Henry
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ============================================================
+       LÓGICA JAVASCRIPT NATIVA (AUDIO SUTIL, FASES Y CONFETI)
+       ============================================================ -->
+  <script>
+    (function() {
+      // ------------------------------------------------------------
+      // 1. EFECTOS DE AUDIO Y HÁPTICO
+      // ------------------------------------------------------------
+      let audioCtx = null;
+      function getAudioContext() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) audioCtx = new AudioContextClass();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
+      }
+
+      function triggerHaptic(ms = 25) {
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate(ms); } catch (e) {}
+        }
+      }
+
+      function playCrunchSound() {
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320 + Math.random() * 80, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.08);
+
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.08);
+        } catch (e) {}
+      }
+
+      function playCelebrationChord() {
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          const freqs = [523.25, 659.25, 783.99, 1046.50]; // Acorde C Mayor brillante
+          freqs.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.1);
+            gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.1);
+            gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + idx * 0.1 + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.1 + 0.7);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime + idx * 0.1);
+            osc.stop(ctx.currentTime + idx * 0.1 + 0.75);
+          });
+        } catch (e) {}
+      }
+
+      // ------------------------------------------------------------
+      // 2. CONTROL DE PANTALLAS
+      // ------------------------------------------------------------
+      const screen1 = document.getElementById('screen-1');
+      const screen2 = document.getElementById('screen-2');
+      const screen3 = document.getElementById('screen-3');
+
+      function changeScreen(fromScreen, toScreen, onDone) {
+        fromScreen.classList.add('fade-out');
+        setTimeout(() => {
+          fromScreen.classList.remove('active', 'fade-out');
+          fromScreen.style.display = 'none';
+
+          toScreen.style.display = 'flex';
+          void toScreen.offsetWidth; // forzar reflow
+          toScreen.classList.add('active');
+
+          if (onDone) onDone();
+        }, 500);
+      }
+
+      // ------------------------------------------------------------
+      // 3. FASE 1: EL DESCONGELAMIENTO
+      // ------------------------------------------------------------
+      let taps = 0;
+      const targetTaps = 5;
+      const iceStage = document.getElementById('ice-stage');
+      const iceBox = document.getElementById('ice-box');
+      const iceCracksSvg = document.getElementById('ice-cracks-svg');
+      const iceAura = document.getElementById('ice-aura');
+
+      iceStage.addEventListener('click', (e) => {
+        if (taps >= targetTaps) return;
+
+        taps++;
+        triggerHaptic(30);
+        playCrunchSound();
+
+        // Reducir opacidad 20%
+        const currentOpacity = 1 - (taps * 0.2);
+        iceBox.style.opacity = Math.max(currentOpacity, 0.05);
+
+        // Barra de toques
+        const barSlot = document.getElementById(`bar-${taps}`);
+        if (barSlot) barSlot.classList.add('active');
+
+        // Mostrar grietas progresivamente
+        iceCracksSvg.style.opacity = (taps / targetTaps) * 0.85;
+
+        // Efecto temblor
+        iceBox.classList.remove('shake-ice');
+        void iceBox.offsetWidth;
+        iceBox.classList.add('shake-ice');
+
+        // Partículas de escarcha
+        createFlakes(e);
+
+        if (taps >= targetTaps) {
+          iceAura.style.transform = 'scale(1.4)';
+          iceBox.style.transform = 'scale(0.2) rotate(20deg)';
+          iceBox.style.opacity = '0';
+          setTimeout(() => {
+            changeScreen(screen1, screen2, startSyncScreen);
+          }, 450);
+        }
+      });
+
+      function createFlakes(e) {
+        const rect = iceStage.getBoundingClientRect();
+        const flakes = ['❄️', '💧', '✨'];
+        for (let i = 0; i < 5; i++) {
+          const el = document.createElement('span');
+          el.className = 'ice-flake';
+          el.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+          const x = (e.clientX || rect.left + rect.width / 2) - 8;
+          const y = (e.clientY || rect.top + rect.height / 2) - 8;
+          el.style.left = `${x}px`;
+          el.style.top = `${y}px`;
+          const tx = (Math.random() - 0.5) * 120;
+          const ty = -(Math.random() * 70 + 20);
+          el.style.setProperty('--tx', `${tx}px`);
+          el.style.setProperty('--ty', `${ty}px`);
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 750);
+        }
+      }
+
+      // ------------------------------------------------------------
+      // 4. FASE 2: PANTALLA DE SINCRONIZACIÓN (6 SEGUNDOS, 1.5s POR TEXTO)
+      // ------------------------------------------------------------
+      const syncProgressFill = document.getElementById('sync-progress-fill');
+      const syncPercentageLabel = document.getElementById('sync-percentage-label');
+      const syncDynamicText = document.getElementById('sync-dynamic-text');
+
+      const syncTexts = [
+        'Calculando porciones de pizza de pepperoni... 🍕',
+        'Ajustando horarios de pastelería y natación... 👩‍🍳🏊‍♀️',
+        'Preparando paciencia para esos días malos... 🌪️',
+        'Desbloqueando el 100% del corazón... ❤️🩹'
+      ];
+
+      function startSyncScreen() {
+        // 3.2 segundos por texto para lectura cómoda y relajada en celulares
+        const textDuration = 3200; 
+        const totalDuration = syncTexts.length * textDuration; // 12.8 segundos en total
+        const startTime = Date.now();
+        let lastIndex = 0;
+
+        // Establecer primer texto de inicio
+        syncDynamicText.textContent = syncTexts[0];
+
+        const timer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / totalDuration, 1);
+
+          // Actualizar barra y porcentaje con suavidad
+          syncProgressFill.style.width = `${progress * 100}%`;
+          syncPercentageLabel.textContent = `${Math.floor(progress * 100)}%`;
+
+          // Calcular índice actual de texto (cada 3.2s)
+          const currentIndex = Math.min(Math.floor(elapsed / textDuration), syncTexts.length - 1);
+
+          if (currentIndex !== lastIndex) {
+            lastIndex = currentIndex;
+            // Transición suave de texto
+            syncDynamicText.classList.add('text-transition');
+            setTimeout(() => {
+              syncDynamicText.textContent = syncTexts[currentIndex];
+              syncDynamicText.classList.remove('text-transition');
+            }, 200);
+          }
+
+          // Al completarse el 100%, pequeña pausa de éxito y transición suave
+          if (progress >= 1) {
+            clearInterval(timer);
+            syncPercentageLabel.textContent = '100%';
+            
+            setTimeout(() => {
+              syncDynamicText.classList.add('text-transition');
+              setTimeout(() => {
+                syncDynamicText.textContent = '¡Sincronización completada con éxito! ✨';
+                syncDynamicText.classList.remove('text-transition');
+              }, 200);
+
+              setTimeout(() => {
+                changeScreen(screen2, screen3, initFallingStars);
+              }, 1200);
+            }, 600);
+          }
+        }, 30);
+      }
+
+      // ------------------------------------------------------------
+      // 5. FASE 3: ESTRELLITAS CAYENDO POR CSS
+      // ------------------------------------------------------------
+      function initFallingStars() {
+        const container = document.getElementById('sky-stars-layer');
+        if (!container) return;
+        container.innerHTML = '';
+        const symbols = ['✨', '⭐', '🤍'];
+
+        for (let i = 0; i < 18; i++) {
+          const star = document.createElement('div');
+          star.className = 'css-star';
+          star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+          star.style.left = `${Math.random() * 95}%`;
+          star.style.animationDuration = `${4 + Math.random() * 4}s`;
+          star.style.animationDelay = `${Math.random() * 4}s`;
+          star.style.fontSize = `${11 + Math.random() * 8}px`;
+          container.appendChild(star);
+        }
+      }
+
+      // ------------------------------------------------------------
+      // 6. FASE 3: BOTONES & CONFETI
+      // ------------------------------------------------------------
+      const btnOrange = document.getElementById('btn-orange');
+      const btnPizza = document.getElementById('btn-pizza');
+      const btnStack = document.getElementById('btn-stack');
+      const proposalHeadline = document.getElementById('proposal-headline');
+      const proposalSubtext = document.getElementById('proposal-subtext');
+      const acceptanceCard = document.getElementById('acceptance-card');
+
+      function handleAcceptance() {
+        triggerHaptic(80);
+        playCelebrationChord();
+        launchConfetti();
+
+        btnStack.style.opacity = '0';
+        btnStack.style.transform = 'scale(0.95)';
+        proposalSubtext.style.display = 'none';
+
+        setTimeout(() => {
+          btnStack.style.display = 'none';
+          proposalHeadline.style.display = 'none';
+          acceptanceCard.classList.add('active');
+        }, 350);
+      }
+
+      btnOrange.addEventListener('click', handleAcceptance);
+      btnPizza.addEventListener('click', handleAcceptance);
+
+      // ------------------------------------------------------------
+      // 7. CONFETI LIGERO CON CANVAS (Colores Pastel & Blanco)
+      // ------------------------------------------------------------
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      let confettiArray = [];
+      let confettiRaf = null;
+
+      function handleResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      const palette = ['#e0f2fe', '#bae6fd', '#38bdf8', '#0284c7', '#ffffff', '#fed7aa'];
+
+      class ConfettiPiece {
+        constructor() {
+          this.init();
+        }
+        init() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * -canvas.height;
+          this.size = Math.random() * 9 + 5;
+          this.color = palette[Math.floor(Math.random() * palette.length)];
+          this.vy = Math.random() * 3 + 2.2;
+          this.vx = (Math.random() - 0.5) * 2.5;
+          this.rot = Math.random() * 360;
+          this.vrot = (Math.random() - 0.5) * 7;
+          this.alpha = 1;
+        }
+        step() {
+          this.y += this.vy;
+          this.x += this.vx + Math.sin(this.y * 0.02) * 0.8;
+          this.rot += this.vrot;
+          if (this.y > canvas.height) this.init();
+        }
+        paint() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate((this.rot * Math.PI) / 180);
+          ctx.fillStyle = this.color;
+          ctx.globalAlpha = this.alpha;
+          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.55);
+          ctx.restore();
+        }
+      }
+
+      function launchConfetti() {
+        confettiArray = [];
+        for (let i = 0; i < 90; i++) {
+          confettiArray.push(new ConfettiPiece());
+        }
+
+        const duration = 6000;
+        const start = Date.now();
+
+        function frame() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          confettiArray.forEach(p => {
+            p.step();
+            p.paint();
+          });
+
+          if (Date.now() - start < duration) {
+            confettiRaf = requestAnimationFrame(frame);
+          } else {
+            let fade = setInterval(() => {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              let visible = false;
+              confettiArray.forEach(p => {
+                p.y += p.vy;
+                p.alpha -= 0.035;
+                if (p.alpha > 0) {
+                  p.paint();
+                  visible = true;
+                }
+              });
+              if (!visible) {
+                clearInterval(fade);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+              }
+            }, 30);
+          }
+        }
+        if (confettiRaf) cancelAnimationFrame(confettiRaf);
+        frame();
+      }
+
+    })();
+  </script>
+</body>
+</html>
